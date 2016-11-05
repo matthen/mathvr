@@ -121,7 +121,7 @@ window.onload = (function () {
     animate();
   }
 
-  document.getElementById("start_full").onclick = function() {
+  document.getElementById("start").onclick = function() {
     docelem = document.documentElement;
     if (docelem.requestFullscreen) {
         docelem.requestFullscreen();
@@ -137,7 +137,6 @@ window.onload = (function () {
     }
     screen.orientation.lock('portrait').then(startAnimation);
   }
-  document.getElementById("start").onclick = startAnimation;
 
 
 
