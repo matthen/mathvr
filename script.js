@@ -1,16 +1,8 @@
 window.onload = (function () {
-
-  var deg2rad = Math.PI / 180;
-  var camera, scene, renderer, controls;
-
   function startAnimation() {
-    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
+    let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
     camera.rotation.order = "ZXY";
-
-    scene = new THREE.Scene();
-
-    var geometry = new THREE.BoxGeometry(1, 1, 1);
-    var material = new THREE.MeshLambertMaterial({color: 0x00ff00});
+    let scene = new THREE.Scene();
 
     // Add stars.
     let num_stars = 0;
@@ -29,12 +21,11 @@ window.onload = (function () {
       star.position.z = z;
       star.rotation.x = Math.random() * Math.PI;
       star.rotation.y = Math.random() * Math.PI;
-
       scene.add(star);
     }
 
     // add edges
-    material = new THREE.LineBasicMaterial({
+    let material = new THREE.LineBasicMaterial({
       color: 0xeeeeff
     });
     for (var j = 0; j < 2; ++j) {
@@ -57,26 +48,20 @@ window.onload = (function () {
       }
     }
 
-
     // add an ambient light
-    var light = new THREE.AmbientLight(0x404040, 0.8);
-    scene.add( light );
-
+    scene.add(new THREE.AmbientLight(0x404040, 0.8));
 
     // create a point light
-    var pointLight = new THREE.PointLight(0xFFFFFF);
-
-    // set its position
+    let pointLight = new THREE.PointLight(0xFFFFFF);
     pointLight.position.x = -100;
     pointLight.position.y = -100;
     pointLight.position.z = 100;
-
-    // add to the scene
     scene.add(pointLight);
 
-    renderer = new THREE.WebGLRenderer();
-
-    var initial_alpha;
+    let renderer = new THREE.WebGLRenderer();
+    
+    let deg2rad = Math.PI / 180;
+    let initial_alpha;
     window.addEventListener("deviceorientation", function(e) {
       if (!e.alpha) {
         return;
@@ -84,7 +69,7 @@ window.onload = (function () {
       if (!initial_alpha) {
         initial_alpha = e.alpha;
       }
-      var alpha = e.alpha - initial_alpha;
+      let alpha = e.alpha - initial_alpha;
       alpha = alpha < 0 ? alpha + 360 : alpha
       camera.rotation.set (e.beta * deg2rad, e.gamma * deg2rad, alpha * deg2rad);
     }, false);
@@ -100,7 +85,7 @@ window.onload = (function () {
       renderer.setSize( window.innerWidth, window.innerHeight );
     }, false);
 
-    var velocity = new THREE.Vector3(0, 0, 0);
+    let velocity = new THREE.Vector3(0, 0, 0);
 
     renderer.domElement.addEventListener("touchstart", function (e) {
       velocity.copy(camera.getWorldDirection().multiplyScalar(0.1));
@@ -110,7 +95,6 @@ window.onload = (function () {
       velocity.setScalar(0);
     }, false);
 
-    let up = new THREE.Vector3(0, 0, 1);
     function animate() {
       if (velocity.lengthSq() > 0) {
         camera.position.add(velocity);
@@ -137,7 +121,5 @@ window.onload = (function () {
     }
     screen.orientation.lock('portrait').then(startAnimation);
   }
-
-
 
 });
