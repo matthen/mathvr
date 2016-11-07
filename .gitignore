@@ -1,4 +1,4 @@
 serve.py
 build.py
 *.zip
-template/*
+_*
