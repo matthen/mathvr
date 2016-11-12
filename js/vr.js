@@ -95,6 +95,42 @@ var VR = function () {
     return button;
   }
 
+  // Movement.
+  let velocity = new THREE.Vector3();
+  let moving_t = 0.1;
+  this.addMovementButtons = function() {
+    let forward_button = this.addButton("arrow_upward");
+    let backward_button = this.addButton("arrow_downward");
+
+    function startForward() {
+       velocity.copy(this.camera.getWorldDirection().multiplyScalar(0.5));
+    }
+    function startBackward() {
+       velocity.copy(this.camera.getWorldDirection().multiplyScalar(-0.5));
+    }
+    function stopMoving() {
+      velocity.setScalar(0);
+      moving_t = 0.1;
+    }
+    forward_button.addEventListener("touchstart", startForward.bind(this),
+                                    false);
+    forward_button.addEventListener("touchend", stopMoving, false);
+    backward_button.addEventListener("touchstart", startBackward.bind(this),
+                                    false);
+    backward_button.addEventListener("touchend", stopMoving, false);
+  }
+  this.updateMovement = function() {
+    if (velocity.lengthSq() > 0) {
+      moving_t += 0.005;
+      if (moving_t > 1.0) {
+        moving_t = 1.0;
+      }
+      let v = new THREE.Vector3();
+      v.copy(velocity).multiplyScalar(moving_t * moving_t);
+      this.camera.position.add(v);
+    }
+  }
+
   // Removes the renderer canvas from the page, returns state to before
   // start was called.
   this.reset = function() {
@@ -104,11 +140,6 @@ var VR = function () {
 
 }  // VR
 
-// Animate the next frame. Should be overwritten.
-VR.prototype.animate = function() {
-  requestAnimationFrame(this.animate.bind(this));
-  this.renderer.render(this.scene, this.camera);
-}
 
 // Create the scene, run after the viewer is created. Should be overwritten.
 VR.prototype.createScene = function() {

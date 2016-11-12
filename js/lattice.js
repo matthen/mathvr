@@ -1,14 +1,13 @@
 window.addEventListener("load", function() {
   document.getElementById("start_lattice").addEventListener("click", function() {
     let vr = new VR();
-    let velocity = new THREE.Vector3();
+
     let lp_queue = [];
     let lattice_points = [];
     let button;
     let simple = true;  // showing the simple lattice
     let transitioning = false;
     let transition_t = 0;
-    let moving_t = 0.1;
 
     vr.createScene = function () {
       // Create lights.
@@ -44,26 +43,7 @@ window.addEventListener("load", function() {
         transitioning = true;
         this.disabled = true;
       });
-      let forward_button = vr.addButton("arrow_upward");
-      let backward_button = vr.addButton("arrow_downward");
-
-      // Add movement.
-      function startForward() {
-         velocity.copy(this.camera.getWorldDirection().multiplyScalar(0.5));
-      }
-      function startBackward() {
-         velocity.copy(this.camera.getWorldDirection().multiplyScalar(-0.5));
-      }
-      function stopMoving() {
-        velocity.setScalar(0);
-        moving_t = 0.1;
-      }
-      forward_button.addEventListener("touchstart", startForward.bind(this),
-                                      false);
-      forward_button.addEventListener("touchend", stopMoving, false);
-      backward_button.addEventListener("touchstart", startBackward.bind(this),
-                                      false);
-      backward_button.addEventListener("touchend", stopMoving, false);
+      vr.addMovementButtons();
 
     };
 
@@ -118,15 +98,7 @@ window.addEventListener("load", function() {
       if (lp_queue.length > 0 && !transitioning) {
         addLatticePoint.bind(this)(lp_queue.pop());
       }
-      if (velocity.lengthSq() > 0) {
-        moving_t += 0.005;
-        if (moving_t > 1.0) {
-          moving_t = 1.0;
-        }
-        let v = new THREE.Vector3();
-        v.copy(velocity).multiplyScalar(moving_t * moving_t);
-        this.camera.position.add(v);
-      }
+      this.updateMovement();
       requestAnimationFrame(this.animate.bind(this));
       this.renderer.render(this.scene, this.camera);
     }
