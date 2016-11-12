@@ -4,6 +4,12 @@ window.addEventListener("load", function() {
     let velocity = new THREE.Vector3(0, 0, 0);
     let vr = new VR();
     vr.createScene = function () {
+      // Add some lights.
+      let ambient = new THREE.AmbientLight(0x404040, 0.8);
+      let point = new THREE.PointLight(0xFFFFFF);
+      point.position = new THREE.Vector3(-100, -100, 100);
+      this.scene.add(ambient); this.scene.add(point);
+
       let num_stars = 0;
       while (num_stars < 100) {
         let x = 100 * (2 * Math.random() - 1), y = 100 * (2 * Math.random() - 1),
@@ -64,7 +70,6 @@ window.addEventListener("load", function() {
     }
     vr.start();
 
-  }, false);  // #start click
+  }, false);  // #start_bucky click
 
 }, false);  // window load
-

@@ -12,23 +12,16 @@ var VR = function () {
   }
 
 
-  // Creates camera, lights, scene, renderer for viewing.
+  // Creates camera, scene, renderer for viewing.
   // Adds the renderer canvas to the page.
   this.createViewer = function() {
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(
                         75,  // field of view in degrees.
                         window.innerWidth / window.innerHeight,  // aspect ratio
-                        0.5,  // near plane
-                        1000);  // far plane
+                        1,  // near plane
+                        10000);  // far plane
     this.camera.rotation.order = "ZXY";
-
-    // Add default lights.
-    let ambient = new THREE.AmbientLight(0x404040, 0.8);
-    let point = new THREE.PointLight(0xFFFFFF);
-    point.position = new THREE.Vector3(-100, -100, 100);
-    this.scene.add(ambient); this.scene.add(point);
-    this.lights = [ambient, point];
 
     // Create the renderer;
     this.renderer = new THREE.WebGLRenderer();
