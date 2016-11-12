@@ -8,14 +8,17 @@ window.addEventListener("load", function() {
     let simple = true;  // showing the simple lattice
     let transitioning = false;
     let transition_t = 0;
+    let moving_t = 0.1;
 
     vr.createScene = function () {
       // Create lights.
-      let point_light = new THREE.PointLight(0xffffff);
-      point_light.position = new THREE.Vector3(0, 0, 0);
-      point_light.position = new THREE.Vector3(-100, -100, 100);
+      let point_light = new THREE.PointLight(0xb1e6f9, 0.5);
+      point_light.position.set(-100, -100, 100);
       this.scene.add(point_light);
-      this.scene.add(new THREE.AmbientLight(0xffffff, 0.2));
+      let point_light_2 = new THREE.PointLight(0xfc8f8f, 0.5);
+      point_light_2.position.set(100, 100, 100);
+      this.scene.add(point_light_2);
+      this.scene.add(new THREE.AmbientLight(0xf8ff84, 0.2));
 
       // Create the points on the lattice.
       let n = 5;
@@ -35,44 +38,55 @@ window.addEventListener("load", function() {
       });
 
       // Add button to change lattice type;
-      button = document.createElement("button");
-      button.className = ("control-button mdl-button mdl-js-button "
-                          + "mdl-button--fab mdl-js-ripple-effect "
-                          + "mdl-button--colored");
-      let button_i = document.createElement("i");
-      button_i.className = "material-icons";
-      button_i.innerText = "swap_horizontal";
-      button.appendChild(button_i);
-      vr.canvas_wrapper.appendChild(button);
-      componentHandler.upgradeAllRegistered();
+      button = vr.addButton("swap_horizontal");
       button.addEventListener("click", function () {
         simple = !simple;
         transitioning = true;
         this.disabled = true;
       });
+      let forward_button = vr.addButton("arrow_upward");
+      let backward_button = vr.addButton("arrow_downward");
 
       // Add movement.
-      this.renderer.domElement.addEventListener("touchstart", function (e) {
-        velocity.copy(this.camera.getWorldDirection().multiplyScalar(0.05));
-        e.preventDefault();
-      }.bind(this), false);
-      this.renderer.domElement.addEventListener("touchend", function (e) {
+      function startForward() {
+         velocity.copy(this.camera.getWorldDirection().multiplyScalar(0.5));
+      }
+      function startBackward() {
+         velocity.copy(this.camera.getWorldDirection().multiplyScalar(-0.5));
+      }
+      function stopMoving() {
         velocity.setScalar(0);
-      }.bind(this), false);
+        moving_t = 0.1;
+      }
+      forward_button.addEventListener("touchstart", startForward.bind(this),
+                                      false);
+      forward_button.addEventListener("touchend", stopMoving, false);
+      backward_button.addEventListener("touchstart", startBackward.bind(this),
+                                      false);
+      backward_button.addEventListener("touchend", stopMoving, false);
+
     };
 
-    let lp_geometry = new THREE.SphereGeometry(0.15, 12, 12);
-    let lp_material = new THREE.MeshPhongMaterial({color: 0xffff00});
+    let lp_geometry = new THREE.SphereGeometry(0.15, 16, 16);
+    let lp_material = new THREE.MeshPhongMaterial({
+      color: 0xffffff,
+      specular: 0x2f89d8,
+      shininess: 10,
+      reflectivity: 0.7,
+      });
     let bc_basis = new THREE.Matrix3();
     bc_basis.set(1.25, 0, 0.625, 0, 1.25, 0.625, 0, 0, 0.625);
     function addLatticePoint(centre) {
       let lp = new THREE.Mesh(lp_geometry, lp_material);
-      lp.position.set(centre[0], centre[1], centre[2]);
-      lp.simple_position = new THREE.Vector3();
-      lp.simple_position.copy(lp.position);
+      lp.simple_position = new THREE.Vector3(centre[0], centre[1], centre[2]);
       lp.bc_position = new THREE.Vector3();
-      lp.bc_position.copy(lp.position);
+      lp.bc_position.copy(lp.simple_position);
       lp.bc_position.applyMatrix3(bc_basis);
+      if (simple) {
+        lp.position.copy(lp.simple_position);
+      } else {
+        lp.position.copy(lp.bc_position);
+      }
       lattice_points.push(lp);
       this.scene.add(lp);
     }
@@ -101,11 +115,17 @@ window.addEventListener("load", function() {
         transition_t = 0;
         button.disabled = false;
       }
-      if (lp_queue.length > 0) {
+      if (lp_queue.length > 0 && !transitioning) {
         addLatticePoint.bind(this)(lp_queue.pop());
       }
       if (velocity.lengthSq() > 0) {
-        this.camera.position.add(velocity);
+        moving_t += 0.005;
+        if (moving_t > 1.0) {
+          moving_t = 1.0;
+        }
+        let v = new THREE.Vector3();
+        v.copy(velocity).multiplyScalar(moving_t * moving_t);
+        this.camera.position.add(v);
       }
       requestAnimationFrame(this.animate.bind(this));
       this.renderer.render(this.scene, this.camera);

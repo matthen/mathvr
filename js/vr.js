@@ -56,6 +56,7 @@ var VR = function () {
 
   // Start the animation.
   this.start = function () {
+    this.reset();
     // TODO(matt) add listener for going out of fullscreen.
 
     // Request full screen.
@@ -79,10 +80,26 @@ var VR = function () {
 
   }
 
+  // Add a button.
+  this.addButton = function(icon) {
+    let button = document.createElement("button");
+    button.className = ("mdl-button mdl-js-button "
+                        + "mdl-button--fab mdl-js-ripple-effect "
+                        + "mdl-button--colored");
+    let button_i = document.createElement("i");
+    button_i.className = "material-icons";
+    button_i.innerText = icon;
+    button.appendChild(button_i);
+    this.control_buttons.appendChild(button);
+    componentHandler.upgradeAllRegistered();
+    return button;
+  }
+
   // Removes the renderer canvas from the page, returns state to before
   // start was called.
-  // TODO(matt) - remove event listeners etc.
-  this.stop = function() {
+  this.reset = function() {
+    this.canvas_wrapper.innerHTML = "<div id='control_buttons'></div>";
+    this.control_buttons = document.getElementById("control_buttons");
   }
 
 }  // VR

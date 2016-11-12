@@ -13,12 +13,22 @@ html, body {
   margin: 0;
   padding: 0;
 }
-.control-button {
+#control_buttons {
   z-index: 1000;
   position: absolute;
   bottom: 32px;
   right: 32px;
 }
+#control_buttons .mdl-button {
+  display: block;
+  margin: 4px;
+  margin-top: 12px;
+}
+
+#control_buttons .mdl-button:disabled {
+  background: rgba(255, 64, 129, 0.5);
+}
+
 
 .mdl-layout.is-small-screen .mdl-layout__tab-bar .mdl-button {
   display: none;
