@@ -1,4 +1,6 @@
 var VR = function () {
+  this.canvas_wrapper = document.getElementById("canvas_wrapper");
+
   // Returns whether the browser is compatible.
   // TODO(matt)
   function isCompatible() {
@@ -19,7 +21,7 @@ var VR = function () {
     this.camera = new THREE.PerspectiveCamera(
                         75,  // field of view in degrees.
                         window.innerWidth / window.innerHeight,  // aspect ratio
-                        1,  // near plane
+                        0.05,  // near plane
                         10000);  // far plane
     this.camera.rotation.order = "ZXY";
 
@@ -42,10 +44,7 @@ var VR = function () {
     }.bind(this), false);
 
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    this.renderer.domElement.style.position = 'absolute';
-    this.renderer.domElement.style.top = 0;
-    this.renderer.domElement.style.left = 0;
-    document.body.appendChild(this.renderer.domElement);
+    this.canvas_wrapper.appendChild(this.renderer.domElement);
 
     window.addEventListener('resize', function() {
       this.camera.aspect = window.innerWidth / window.innerHeight;
