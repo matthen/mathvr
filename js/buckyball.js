@@ -9,24 +9,7 @@ window.addEventListener("load", function() {
       point.position = new THREE.Vector3(-100, -100, 100);
       this.scene.add(ambient); this.scene.add(point);
 
-      let num_stars = 0;
-      while (num_stars < 100) {
-        let x = 100 * (2 * Math.random() - 1), y = 100 * (2 * Math.random() - 1),
-            z = 100 * (2 * Math.random() - 1);
-        if (x * x + y * y + z * z < 10) {
-          continue;
-        }
-        num_stars++;
-        let geometry = new THREE.TetrahedronGeometry(0.5, 0);
-        let material = new THREE.MeshBasicMaterial( { color: 0xffffff } );
-        let star = new THREE.Mesh(geometry, material);
-        star.position.x = x;
-        star.position.y = y;
-        star.position.z = z;
-        star.rotation.x = Math.random() * Math.PI;
-        star.rotation.y = Math.random() * Math.PI;
-        this.scene.add(star);
-      }
+      this.addStars(100, 20, 100);
 
       // add edges
       let material = new THREE.LineBasicMaterial({
@@ -51,7 +34,7 @@ window.addEventListener("load", function() {
           this.scene.add(edge);
         }
       }
-      vr.addMovementButtons();
+      this.addMovementButtons();
     };
 
     vr.animate = function () {

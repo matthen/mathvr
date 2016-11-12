@@ -19,8 +19,11 @@ window.addEventListener("load", function() {
       this.scene.add(point_light_2);
       this.scene.add(new THREE.AmbientLight(0xf8ff84, 0.2));
 
+
       // Create the points on the lattice.
       let n = 5;
+      this.addStars(100, 4 * n, 100);
+
       for (let i = -n; i < n; i++) {
         for (let j = -n; j < n; j++) {
           for (let k = -n; k < n; k++) {
@@ -37,13 +40,13 @@ window.addEventListener("load", function() {
       });
 
       // Add button to change lattice type;
-      button = vr.addButton("swap_horizontal");
+      button = this.addButton("swap_horizontal");
       button.addEventListener("click", function () {
         simple = !simple;
         transitioning = true;
         this.disabled = true;
       });
-      vr.addMovementButtons();
+      this.addMovementButtons();
 
     };
 

@@ -131,6 +131,29 @@ var VR = function () {
     }
   }
 
+  // Adding stars.
+  this.addStars = function (num_stars, min_radius, max_radius) {
+    let num_added = 0;
+    let geometry = new THREE.TetrahedronGeometry(0.5, 0);
+    let material = new THREE.MeshBasicMaterial({color: 0xffffff});
+    while (num_added < num_stars) {
+      let x = max_radius * (2 * Math.random() - 1),
+          y = max_radius * (2 * Math.random() - 1),
+          z = max_radius * (2 * Math.random() - 1);
+      if (x * x + y * y + z * z < min_radius * min_radius) {
+        continue;
+      }
+      num_added++;
+      let star = new THREE.Mesh(geometry, material);
+      star.position.x = x;
+      star.position.y = y;
+      star.position.z = z;
+      star.rotation.x = Math.random() * Math.PI;
+      star.rotation.y = Math.random() * Math.PI;
+      this.scene.add(star);
+    }
+  }
+
   // Removes the renderer canvas from the page, returns state to before
   // start was called.
   this.reset = function() {
