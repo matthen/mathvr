@@ -33,13 +33,20 @@ def MinifyCSS():
     f.write(minified)
   print "Wrote ../gh-pages/css/style.min.css"
 
-def MinifyVRJS():
-  """Minify the vr.js library."""
+def BuildJS():
+  """Build js libraries."""
+  # First, minify and copy over vr.js.
   with open("js/vr.js", "r") as f:
     js = f.read()
   with open("../gh-pages/js/vr.min.js", "w") as f:
      f.write(slimit.minify(js))
   print "Wrote ../gh-pages/js/vr.min.js"
+
+  # Copy the other javascript libraries.
+  for fname in ["three.min.js", "material.min.js"]:
+    shutil.copy("js/" + fname, "../gh-pages/js/" + fname)
+    print "Wrote ../gh-pages/js/" + fname
+
 
 
 def CreateIndexPage():
@@ -73,13 +80,12 @@ def CreateVisualizationPages():
     print "Wrote ../gh-pages/" + js_file
 
 
-
 if __name__ == '__main__':
   rule = "all"
   if len(sys.argv) > 1:
     rule = sys.argv[-1]
 
-  rules = ["css", "viz", "vrjs", "index", "all"]
+  rules = ["css", "viz", "js", "index", "all"]
 
   if rule not in rules:
     raise ValueError("rule must be one of: {}".format(", ".join(rules)))
@@ -90,8 +96,8 @@ if __name__ == '__main__':
   if rule in ["css", "all"]:
     MinifyCSS()
 
-  if rule in ["vrjs", "all"]:
-    MinifyVRJS()
+  if rule in ["js", "all"]:
+    BuildJS()
 
   if rule in ["index", "all"]:
     CreateIndexPage()
