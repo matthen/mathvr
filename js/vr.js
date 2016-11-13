@@ -27,8 +27,8 @@ var VR = function () {
 
     // Create the renderer;
     this.renderer = new THREE.WebGLRenderer();
-    let deg2rad = Math.PI / 180;
-    let initial_alpha;
+    var deg2rad = Math.PI / 180;
+    var initial_alpha;
     window.addEventListener("deviceorientation", function(e) {
       if (!e.alpha) {
         return;
@@ -36,7 +36,7 @@ var VR = function () {
       if (!initial_alpha) {
         initial_alpha = e.alpha;
       }
-      let alpha = e.alpha - initial_alpha;
+      var alpha = e.alpha - initial_alpha;
       alpha = alpha < 0 ? alpha + 360 : alpha
       this.camera.rotation.set(e.beta * deg2rad,
                                e.gamma * deg2rad,
@@ -82,11 +82,11 @@ var VR = function () {
 
   // Add a button.
   this.addButton = function(icon) {
-    let button = document.createElement("button");
+    var button = document.createElement("button");
     button.className = ("mdl-button mdl-js-button "
                         + "mdl-button--fab mdl-js-ripple-effect "
                         + "mdl-button--colored");
-    let button_i = document.createElement("i");
+    var button_i = document.createElement("i");
     button_i.className = "material-icons";
     button_i.innerText = icon;
     button.appendChild(button_i);
@@ -96,11 +96,11 @@ var VR = function () {
   }
 
   // Movement.
-  let velocity = new THREE.Vector3();
-  let moving_t = 0.1;
+  var velocity = new THREE.Vector3();
+  var moving_t = 0.1;
   this.addMovementButtons = function() {
-    let forward_button = this.addButton("arrow_upward");
-    let backward_button = this.addButton("arrow_downward");
+    var forward_button = this.addButton("arrow_upward");
+    var backward_button = this.addButton("arrow_downward");
 
     function startForward() {
        velocity.copy(this.camera.getWorldDirection().multiplyScalar(0.5));
@@ -125,7 +125,7 @@ var VR = function () {
       if (moving_t > 1.0) {
         moving_t = 1.0;
       }
-      let v = new THREE.Vector3();
+      var v = new THREE.Vector3();
       v.copy(velocity).multiplyScalar(moving_t * moving_t);
       this.camera.position.add(v);
     }
@@ -133,18 +133,18 @@ var VR = function () {
 
   // Adding stars.
   this.addStars = function (num_stars, min_radius, max_radius) {
-    let num_added = 0;
-    let geometry = new THREE.TetrahedronGeometry(0.5, 0);
-    let material = new THREE.MeshBasicMaterial({color: 0xffffff});
+    var num_added = 0;
+    var geometry = new THREE.TetrahedronGeometry(0.5, 0);
+    var material = new THREE.MeshBasicMaterial({color: 0xffffff});
     while (num_added < num_stars) {
-      let x = max_radius * (2 * Math.random() - 1),
+      var x = max_radius * (2 * Math.random() - 1),
           y = max_radius * (2 * Math.random() - 1),
           z = max_radius * (2 * Math.random() - 1);
       if (x * x + y * y + z * z < min_radius * min_radius) {
         continue;
       }
       num_added++;
-      let star = new THREE.Mesh(geometry, material);
+      var star = new THREE.Mesh(geometry, material);
       star.position.x = x;
       star.position.y = y;
       star.position.z = z;
