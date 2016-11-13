@@ -1,6 +1,16 @@
 {% extends "main.html" %}
 
 {% block content %}
+  <section class="section--center mdl-grid mdl-grid--no-spacing">
+    <div class="mdl-cell mdl-cell--12-col">
+      <p>
+        This is a collection of mathematical visualizations in semi-virtual
+        reality. Open up a visualization below, then use your phone to look
+        around and interact.
+      </p>
+    </div>
+  </section>
+
   {% for visualization in visualizations %}
     <section class="visualization-card section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
         <header class="section__play-btn mdl-cell mdl-cell--3-col-desktop

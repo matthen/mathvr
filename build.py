@@ -46,10 +46,15 @@ def CreateIndexPage():
   c = Context({
     "visualizations": VISUALIZATIONS
   })
-  html = t.render(c)
   with open("index.html", "w") as f:
-    f.write(html)
+    f.write(t.render(c))
   print "Wrote index.html"
+
+  t = get_template("about.html")
+  with open("about.html", "w") as f:
+    f.write(t.render(Context({})))
+  print "Wrote about.html"
+
 
 def CreateVisualizationPages():
   t = get_template("visualization.html")
