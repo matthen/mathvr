@@ -36,11 +36,9 @@
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
       <header class="mdl-layout__header">
         <div class="mdl-layout__header-row">
-          <a class="mdl-navigation__link" href="../index.html">
-            <span class="mdl-layout-title mdl-color-text--grey-50">
-                VR.matthen
-            </span>
-          </a>
+          <span class="mdl-layout-title">
+              VR.matthen
+          </span>
         </div>
       </header>
       <div class="mdl-layout__drawer">
@@ -82,14 +80,14 @@
   </dialog>
 
   <dialog class="mdl-dialog" id="fullscreen_dialog">
-    <h4 class="mdl-dialog__title">Enter full screen</h4>
     <div class="mdl-dialog__content">
       <p>
         Enter full screen to start the visualization.
       </p>
     </div>
     <div class="mdl-dialog__actions">
-      <button class="mdl-button mdl-js-button mdl-button--colored mdl-button--raised">
+      <button class="mdl-button mdl-js-button mdl-button--colored mdl-button--raised"
+              id="fullscreen_button">
         full screen
       </button>
     </div>

@@ -10,6 +10,7 @@ var VR = function () {
   if (!fullscreen_dialog.showModal) {
     dialogPolyfill.registerDialog(webgl_dialog);
   }
+  // TODO(matthen) - detect if orientation is enabled
 
   // Returns whether webgl is available.
   function webglAvailable() {
@@ -29,6 +30,24 @@ var VR = function () {
   function requestFullScreen() {
     fullscreen_dialog.showModal();
   }
+
+  document.getElementById("fullscreen_button").addEventListener(
+      "click", function() {
+        //docelem = document.documentElement;
+        //if (docelem.requestFullscreen) {
+        //    docelem.requestFullscreen();
+        //}
+        //else if (docelem.mozRequestFullScreen) {
+        //    docelem.mozRequestFullScreen();
+        //}
+        //else if (docelem.webkitRequestFullscreen) {
+        //    docelem.webkitRequestFullscreen();
+        //}
+        //else if (docelem.msRequestFullscreen) {
+        //    docelem.msRequestFullscreen();
+        //}
+        //screen.orientation.lock('portrait').then(function() {
+      }, false);
 
   // Creates camera, scene, renderer for viewing.
   // Adds the renderer canvas to the page.
@@ -72,20 +91,6 @@ var VR = function () {
     }.bind(this), false);
 
     // Request full screen.
-    //docelem = document.documentElement;
-    //if (docelem.requestFullscreen) {
-    //    docelem.requestFullscreen();
-    //}
-    //else if (docelem.mozRequestFullScreen) {
-    //    docelem.mozRequestFullScreen();
-    //}
-    //else if (docelem.webkitRequestFullscreen) {
-    //    docelem.webkitRequestFullscreen();
-    //}
-    //else if (docelem.msRequestFullscreen) {
-    //    docelem.msRequestFullscreen();
-    //}
-    //screen.orientation.lock('portrait').then(function() {
     requestFullScreen();
     this.createScene();
   }
