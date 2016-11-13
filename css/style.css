@@ -33,27 +33,6 @@ html, body {
   padding-right: 12px;
 }
 
-
-.mdl-layout.is-small-screen .mdl-layout__tab-bar .mdl-button {
-  display: none;
-}
-.mdl-layout__header-row {
-  padding-left: 40px;
-}
-.mdl-layout.is-small-screen .mdl-layout__header-row h3 {
-  font-size: inherit;
-}
-.mdl-layout__tab-bar-button {
-  display: none;
-}
-.mdl-layout.is-small-screen .mdl-layout__tab-bar .mdl-button {
-  display: none;
-}
- .mdl-layout:not(.is-small-screen) .mdl-layout__tab-bar,
-.mdl-layout:not(.is-small-screen) .mdl-layout__tab-bar-container {
-  overflow: visible;
-}
-
 main {
   padding-top: 48px;
   flex: 1 0 auto;

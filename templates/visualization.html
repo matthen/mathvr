@@ -1,5 +1,7 @@
 {% extends "main.html" %}
-
+{% block title %}
+ &dash; {{visualization.title}}
+{% endblock %}
 {% block content %}
   <button id="start">start</button>
   <div id="canvas_wrapper">
