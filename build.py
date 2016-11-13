@@ -29,17 +29,17 @@ def MinifyCSS():
   css_to_min = "\n".join(css)
   minified = cssprefixer.process(css_to_min, minify=True).encode('utf-8')
   minified += "\n" + "\n".join(min_css)
-  with open("gh-pages/css/style.min.css", "w") as f:
+  with open("../gh-pages/css/style.min.css", "w") as f:
     f.write(minified)
-  print "Wrote css/style.min.css"
+  print "Wrote ../gh-pages/css/style.min.css"
 
 def MinifyVRJS():
   """Minify the vr.js library."""
   with open("js/vr.js", "r") as f:
     js = f.read()
-  with open("gh-pages/js/vr.min.js", "w") as f:
+  with open("../gh-pages/js/vr.min.js", "w") as f:
      f.write(slimit.minify(js))
-  print "Wrote gh-pages/js/vr.min.js"
+  print "Wrote ../gh-pages/js/vr.min.js"
 
 
 def CreateIndexPage():
@@ -48,14 +48,14 @@ def CreateIndexPage():
     "root_dir": ".",
     "visualizations": VISUALIZATIONS
   })
-  with open("gh-pages/index.html", "w") as f:
+  with open("../gh-pages/index.html", "w") as f:
     f.write(t.render(c))
-  print "Wrote gh-pages/index.html"
+  print "Wrote ../gh-pages/index.html"
 
   t = get_template("about.html")
-  with open("gh-pages/about.html", "w") as f:
+  with open("../gh-pages/about.html", "w") as f:
     f.write(t.render(Context({"root_dir": "."})))
-  print "Wrote gh-pages/about.html"
+  print "Wrote ../gh-pages/about.html"
 
 
 def CreateVisualizationPages():
@@ -63,14 +63,14 @@ def CreateVisualizationPages():
   for visualization in VISUALIZATIONS:
     c = Context({"visualization": visualization, "root_dir": ".."})
     html = t.render(c)
-    fname = "gh-pages/vis/" + visualization.name + ".html"
+    fname = "../gh-pages/vis/" + visualization.name + ".html"
     with open(fname, "w") as f:
       f.write(html)
     print "Wrote", fname
 
     js_file = "js/" + visualization.name + ".js"
-    shutil.copy(js_file, "gh-pages/" + js_file)
-    print "Wrote gh-pages/" + js_file
+    shutil.copy(js_file, "../gh-pages/" + js_file)
+    print "Wrote ../gh-pages/" + js_file
 
 
 

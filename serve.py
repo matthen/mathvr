@@ -11,7 +11,7 @@ class ThreadingSimpleServer(SocketServer.ThreadingMixIn,
 
 
 if __name__ == '__main__':
-  os.chdir("gh-pages")
+  os.chdir("../gh-pages")
   server = ThreadingSimpleServer(
                ('', 8000),
                SimpleHTTPServer.SimpleHTTPRequestHandler)
