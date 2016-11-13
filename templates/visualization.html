@@ -1,0 +1,10 @@
+{% extends "main.html" %}
+
+{% block content %}
+  <button id="start">start</button>
+  <div id="canvas_wrapper">
+  </div>
+  <script src="/js/vr.min.js"></script>
+  <script src="/js/three.min.js"></script>
+  <script src="/js/{{visualization.name}}.js"></script>
+{% endblock %}

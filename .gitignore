@@ -1,3 +1,4 @@
 serve.py
 *.zip
+*.pyc
 _*
