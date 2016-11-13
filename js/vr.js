@@ -1,22 +1,41 @@
 var VR = function () {
   this.canvas_wrapper = document.getElementById("canvas_wrapper");
 
-  // Returns whether the browser is compatible.
-  // TODO(matt)
-  function isCompatible() {
-    return true;
+  // Error messages.
+  var webgl_dialog = document.getElementById("webgl_dialog");
+  if (!webgl_dialog.showModal) {
+    dialogPolyfill.registerDialog(webgl_dialog);
+  }
+  var fullscreen_dialog = document.getElementById("fullscreen_dialog");
+  if (!fullscreen_dialog.showModal) {
+    dialogPolyfill.registerDialog(webgl_dialog);
   }
 
-  // Displays the error message.
-  // TODO(matt)
-  function displayError(message) {
-    window.alert(message);
+  // Returns whether webgl is available.
+  function webglAvailable() {
+    try {
+      var canvas = document.createElement("canvas");
+      return !!
+          window.WebGLRenderingContext &&
+          (canvas.getContext("webgl") ||
+           canvas.getContext("experimental-webgl"));
+    } catch(e) {
+        return false;
+    }
   }
 
+  this.paused = true;
+  // Request full screen mode.
+  function requestFullScreen() {
+    fullscreen_dialog.showModal();
+  }
 
   // Creates camera, scene, renderer for viewing.
   // Adds the renderer canvas to the page.
   this.createViewer = function() {
+    this.canvas_wrapper.innerHTML = "<div id='control_buttons'></div>";
+    this.control_buttons = document.getElementById("control_buttons");
+
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(
                         75,  // field of view in degrees.
@@ -51,33 +70,34 @@ var VR = function () {
       this.camera.updateProjectionMatrix();
       this.renderer.setSize(window.innerWidth, window.innerHeight);
     }.bind(this), false);
+
+    // Request full screen.
+    //docelem = document.documentElement;
+    //if (docelem.requestFullscreen) {
+    //    docelem.requestFullscreen();
+    //}
+    //else if (docelem.mozRequestFullScreen) {
+    //    docelem.mozRequestFullScreen();
+    //}
+    //else if (docelem.webkitRequestFullscreen) {
+    //    docelem.webkitRequestFullscreen();
+    //}
+    //else if (docelem.msRequestFullscreen) {
+    //    docelem.msRequestFullscreen();
+    //}
+    //screen.orientation.lock('portrait').then(function() {
+    requestFullScreen();
     this.createScene();
   }
 
   // Start the animation.
   this.start = function () {
-    this.reset();
-    // TODO(matt) add listener for going out of fullscreen.
-
-    // Request full screen.
-    docelem = document.documentElement;
-    if (docelem.requestFullscreen) {
-        docelem.requestFullscreen();
+    if (!webglAvailable()) {
+      webgl_dialog.showModal();
+      return;
     }
-    else if (docelem.mozRequestFullScreen) {
-        docelem.mozRequestFullScreen();
-    }
-    else if (docelem.webkitRequestFullscreen) {
-        docelem.webkitRequestFullscreen();
-    }
-    else if (docelem.msRequestFullscreen) {
-        docelem.msRequestFullscreen();
-    }
-    screen.orientation.lock('portrait').then(function() {
-      this.createViewer();
-      this.animate();
-    }.bind(this));
-
+    this.createViewer();
+    this.animate();
   }
 
   // Add a button.
@@ -96,6 +116,7 @@ var VR = function () {
   }
 
   // Movement.
+  // TODO(matthen) fix selecting button text;
   var velocity = new THREE.Vector3();
   var moving_t = 0.1;
   this.addMovementButtons = function() {
@@ -152,13 +173,6 @@ var VR = function () {
       star.rotation.y = Math.random() * Math.PI;
       this.scene.add(star);
     }
-  }
-
-  // Removes the renderer canvas from the page, returns state to before
-  // start was called.
-  this.reset = function() {
-    this.canvas_wrapper.innerHTML = "<div id='control_buttons'></div>";
-    this.control_buttons = document.getElementById("control_buttons");
   }
 
 }  // VR

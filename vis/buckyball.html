@@ -46,16 +46,16 @@
       <div class="mdl-layout__drawer">
         <nav class="mdl-navigation mdl-layout-spacer">
           <a class="mdl-navigation__link" href="../index.html">
-            <i class="material-icons">home</i>
+            <i class="material-icons mdl-color-text--teal-700">home</i>
             Visualizations
           </a>
           <a class="mdl-navigation__link" href="../about.html">
-            <i class="material-icons">info</i>
+            <i class="material-icons mdl-color-text--teal-700">info</i>
             About
           </a>
           <div class="mdl-layout-spacer"></div>
           <a class="mdl-navigation__link" href="https://github.com/matthen/mathvr/issues" target="_new">
-            <i class="material-icons">bug_report</i>
+            <i class="material-icons mdl-color-text--teal-700">bug_report</i>
             Report an issue
           </a>
         </nav>
@@ -63,9 +63,37 @@
       <main class="mdl-layout__content">
         <div id="content">
           
-  <button id="start">start</button>
+
   <div id="canvas_wrapper">
   </div>
+  <dialog class="mdl-dialog" id="webgl_dialog">
+    <h4 class="mdl-dialog__title">No WebGL</h4>
+    <div class="mdl-dialog__content">
+      <p>
+        This device does not support WebGL, so the visualization cannot work.
+      </p>
+    </div>
+    <div class="mdl-dialog__actions">
+      <a href="https://get.webgl.org/troubleshooting/"
+         target="_new" class="mdl-button mdl-button--colored mdl-button--raised">
+        troubleshoot
+      </a>
+    </div>
+  </dialog>
+
+  <dialog class="mdl-dialog" id="fullscreen_dialog">
+    <h4 class="mdl-dialog__title">Enter full screen</h4>
+    <div class="mdl-dialog__content">
+      <p>
+        Enter full screen to start the visualization.
+      </p>
+    </div>
+    <div class="mdl-dialog__actions">
+      <button class="mdl-button mdl-js-button mdl-button--colored mdl-button--raised">
+        full screen
+      </button>
+    </div>
+  </dialog>
   <script src="../js/vr.min.js"></script>
   <script src="../js/three.min.js"></script>
   <script src="../js/buckyball.js"></script>
