@@ -44,6 +44,7 @@ def MinifyVRJS():
 def CreateIndexPage():
   t = get_template("index.html")
   c = Context({
+    "root_dir": ".",
     "visualizations": VISUALIZATIONS
   })
   with open("index.html", "w") as f:
@@ -52,14 +53,14 @@ def CreateIndexPage():
 
   t = get_template("about.html")
   with open("about.html", "w") as f:
-    f.write(t.render(Context({})))
+    f.write(t.render(Context({"root_dir": "."})))
   print "Wrote about.html"
 
 
 def CreateVisualizationPages():
   t = get_template("visualization.html")
   for visualization in VISUALIZATIONS:
-    c = Context({"visualization": visualization})
+    c = Context({"visualization": visualization, "root_dir": ".."})
     html = t.render(c)
     fname = os.path.join("vis", visualization.name + ".html")
     with open(fname, "w") as f:
