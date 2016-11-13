@@ -1,5 +1,5 @@
 window.addEventListener("load", function() {
-  document.getElementById("start_lattice").addEventListener("click", function() {
+  document.getElementById("start").addEventListener("click", function() {
     let vr = new VR();
 
     let lp_queue = [];
@@ -106,6 +106,5 @@ window.addEventListener("load", function() {
       this.renderer.render(this.scene, this.camera);
     }
     vr.start();
-  }, false);  // #start_conic click
+  }, false);  // #start click
 }, false);  // window load
-
