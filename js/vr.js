@@ -6,9 +6,13 @@ var VR = function () {
   if (!webgl_dialog.showModal) {
     dialogPolyfill.registerDialog(webgl_dialog);
   }
+  var orientation_dialog = document.getElementById("orientation_dialog");
+  if (!orientation_dialog.showModal) {
+    dialogPolyfill.registerDialog(orientation_dialog);
+  }
   var fullscreen_dialog = document.getElementById("fullscreen_dialog");
   if (!fullscreen_dialog.showModal) {
-    dialogPolyfill.registerDialog(webgl_dialog);
+    dialogPolyfill.registerDialog(fullscreen_dialog);
   }
   // TODO(matthen) - detect if orientation is enabled
 
@@ -97,6 +101,10 @@ var VR = function () {
 
   // Start the animation.
   this.start = function () {
+    if (!hasDeviceOrientation()) {
+      orientation_dialog.showModal();
+      return;
+    }
     if (!webglAvailable()) {
       webgl_dialog.showModal();
       return;

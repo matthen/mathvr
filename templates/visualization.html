@@ -6,11 +6,27 @@
 
   <div id="canvas_wrapper">
   </div>
-  <dialog class="mdl-dialog" id="webgl_dialog">
-    <h4 class="mdl-dialog__title">No WebGL</h4>
+  <dialog class="mdl-dialog" id="orientation_dialog">
+    <h4 class="mdl-dialog__title">No gyroscope detected</h4>
     <div class="mdl-dialog__content">
       <p>
-        This device does not support WebGL, so the visualization cannot work.
+        Visualizations require a gyroscope and compass, and work best with a
+        handheld device. Try opening the page on your phone or tablet.
+      </p>
+    </div>
+    <div class="mdl-dialog__actions">
+      <a href="{{root_dir}}/vis/{{visualization.name}}.html"
+         class="mdl-button mdl-button--colored mdl-button--raised">
+        reload
+      </a>
+    </div>
+  </dialog>
+
+  <dialog class="mdl-dialog" id="webgl_dialog">
+    <h4 class="mdl-dialog__title">No webGL</h4>
+    <div class="mdl-dialog__content">
+      <p>
+        This device does not support webGL, so the visualization cannot work.
       </p>
     </div>
     <div class="mdl-dialog__actions">
@@ -34,6 +50,8 @@
       </button>
     </div>
   </dialog>
+
+
   <script src="{{root_dir}}/js/vr.min.js"></script>
   <script src="{{root_dir}}/js/three.min.js"></script>
   <script src="{{root_dir}}/js/{{visualization.name}}.js"></script>
