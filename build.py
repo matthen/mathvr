@@ -79,6 +79,10 @@ def CreateVisualizationPages():
     shutil.copy(js_file, "../gh-pages/" + js_file)
     print "Wrote ../gh-pages/" + js_file
 
+    image = "images/" + visualization.name + ".png"
+    shutil.copy(image, "../gh-pages/" + image)
+    print "Wrote ../gh-pages/" + image
+
 
 if __name__ == '__main__':
   rule = "all"

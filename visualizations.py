@@ -10,8 +10,11 @@ class Visualization(object):
 VISUALIZATIONS = [
   Visualization(name="lattice",
                 title="Cubic lattices",
-                description="Blah blah"),
+                description="""
+                  See what it is like inside a lattice of spheres. Move around
+                  and try to find interesting patterns.
+                """),
   Visualization(name="buckyball",
                 title="Buckyballs",
-                description="Blah blah"),
+                description="A simple demo showing two bucky balls."),
 ]

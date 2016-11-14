@@ -75,6 +75,12 @@ section.section--center {
 section.visualization-card > .section__play-btn {
   min-height: 200px;
 }
+section.visualization-card > header {
+  background-color: #000;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+}
 
 section.visualization-card > header > a {
   height: 100%;
