@@ -34,24 +34,42 @@ var VR = function () {
   function requestFullScreen() {
     fullscreen_dialog.showModal();
   }
-
   document.getElementById("fullscreen_button").addEventListener(
       "click", function() {
-        //docelem = document.documentElement;
-        //if (docelem.requestFullscreen) {
-        //    docelem.requestFullscreen();
-        //}
-        //else if (docelem.mozRequestFullScreen) {
-        //    docelem.mozRequestFullScreen();
-        //}
-        //else if (docelem.webkitRequestFullscreen) {
-        //    docelem.webkitRequestFullscreen();
-        //}
-        //else if (docelem.msRequestFullscreen) {
-        //    docelem.msRequestFullscreen();
-        //}
-        //screen.orientation.lock('portrait').then(function() {
-      }, false);
+        docelem = document.documentElement;
+        if (docelem.requestFullscreen) {
+          docelem.requestFullscreen();
+        }
+        else if (docelem.mozRequestFullScreen) {
+          docelem.mozRequestFullScreen();
+        }
+        else if (docelem.webkitRequestFullscreen) {
+          docelem.webkitRequestFullscreen();
+        }
+        else if (docelem.msRequestFullscreen) {
+          docelem.msRequestFullscreen();
+        }
+        this.paused = false;
+        fullscreen_dialog.close();
+        screen.orientation.lock('portrait').then(function() {
+
+        });
+      }.bind(this), false);
+
+  // If full screen exits, bring the dialog back up.
+  function exitHandler() {
+    console.log(document.webkitIsFullScreen, document.mozFullScreen,
+        document.msFullscreenElement);
+    if (!document.webkitIsFullScreen && !document.mozFullScreen &&
+        document.msFullscreenElement == null) {
+      this.paused = true;
+      fullscreen_dialog.showModal();
+    }
+  }
+  document.addEventListener('webkitfullscreenchange', exitHandler.bind(this), false);
+  document.addEventListener('mozfullscreenchange', exitHandler.bind(this), false);
+  document.addEventListener('fullscreenchange', exitHandler.bind(this), false);
+  document.addEventListener('MSFullscreenChange', exitHandler.bind(this), false);
 
   // Creates camera, scene, renderer for viewing.
   // Adds the renderer canvas to the page.
