@@ -64,11 +64,27 @@
 
   <div id="canvas_wrapper">
   </div>
-  <dialog class="mdl-dialog" id="webgl_dialog">
-    <h4 class="mdl-dialog__title">No WebGL</h4>
+  <dialog class="mdl-dialog" id="orientation_dialog">
+    <h4 class="mdl-dialog__title">No gyroscope detected</h4>
     <div class="mdl-dialog__content">
       <p>
-        This device does not support WebGL, so the visualization cannot work.
+        Visualizations require a gyroscope and compass, and work best with a
+        handheld device. Try opening the page on your phone or tablet.
+      </p>
+    </div>
+    <div class="mdl-dialog__actions">
+      <a href="../vis/lattice.html"
+         class="mdl-button mdl-button--colored mdl-button--raised">
+        reload
+      </a>
+    </div>
+  </dialog>
+
+  <dialog class="mdl-dialog" id="webgl_dialog">
+    <h4 class="mdl-dialog__title">No webGL</h4>
+    <div class="mdl-dialog__content">
+      <p>
+        This device does not support webGL, so the visualization cannot work.
       </p>
     </div>
     <div class="mdl-dialog__actions">
@@ -92,6 +108,8 @@
       </button>
     </div>
   </dialog>
+
+
   <script src="../js/vr.min.js"></script>
   <script src="../js/three.min.js"></script>
   <script src="../js/lattice.js"></script>
@@ -102,5 +120,35 @@
 
     </div>
     <script src="../js/material.min.js"></script>
+    <script type="text/javascript">
+      // hasDeviceOrientation() gives a best guess for whether this device
+      // supports device orientation events fully.
+      window.addEventListener("deviceorientation", function(e) {
+        if (e.alpha) {
+          var d = new Date();
+          d.setTime(d.getTime() + (365*24*60*60*1000));
+          var expires = "expires="+ d.toUTCString();
+          document.cookie = "hasdeviceorientation=true;" + expires + ";path=/";
+        }
+      }, false);
+
+      function hasDeviceOrientation() {
+        if (!window.DeviceOrientationEvent) {
+          return false;
+        }
+        var name = "hasdeviceorientation=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+          var c = ca[i];
+          while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+          }
+          if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+          }
+        }
+        return false;
+      }
+    </script>
   </body>
 </html>
