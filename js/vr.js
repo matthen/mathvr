@@ -58,8 +58,6 @@ var VR = function () {
 
   // If full screen exits, bring the dialog back up.
   function exitHandler() {
-    console.log(document.webkitIsFullScreen, document.mozFullScreen,
-        document.msFullscreenElement);
     if (!document.webkitIsFullScreen && !document.mozFullScreen &&
         document.msFullscreenElement == null) {
       this.paused = true;
