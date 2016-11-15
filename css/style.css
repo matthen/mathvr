@@ -82,6 +82,7 @@ section.visualization-card > header {
 
 section.visualization-card > header > a {
   height: 100%;
+  display: -webkit-box; 
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
