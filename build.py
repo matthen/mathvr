@@ -43,7 +43,7 @@ def BuildJS():
   print "Wrote ../gh-pages/js/vr.min.js"
 
   # Copy the other javascript libraries.
-  for fname in ["three.min.js", "material.min.js"]:
+  for fname in ["three.min.js", "material.min.js", "dialog-polyfill.min.js"]:
     shutil.copy("js/" + fname, "../gh-pages/js/" + fname)
     print "Wrote ../gh-pages/js/" + fname
 
