@@ -1,7 +1,6 @@
 {% extends "main.html" %}
-{% block title %}
- &dash; {{visualization.title}}
-{% endblock %}
+{% block description %}{{visualization.description.strip}}{% endblock %}
+{% block title %}&dash; {{visualization.title}}{% endblock %}
 {% block pre_layout %}
   <div id="canvas_wrapper">
   </div>
@@ -14,9 +13,9 @@
       </p>
     </div>
     <div class="mdl-dialog__actions">
-      <a href="{{root_dir}}/vis/{{visualization.name}}.html"
+      <a href="{{root_dir}}"
          class="mdl-button mdl-button--colored mdl-button--raised">
-        reload
+        close
       </a>
     </div>
   </dialog>
@@ -32,6 +31,10 @@
       <a href="https://get.webgl.org/troubleshooting/"
          target="_new" class="mdl-button mdl-button--colored mdl-button--raised">
         troubleshoot
+      </a>
+      <a href="{{root_dir}}"
+         class="mdl-button mdl-button--colored mdl-button--raised">
+        close
       </a>
     </div>
   </dialog>
