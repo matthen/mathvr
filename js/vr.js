@@ -115,6 +115,20 @@ var VR = function () {
     this.createScene();
   }
 
+  // Should be implemented if the scene changes.
+  this.updateScene = function () {}
+
+  // Called for every new frame.
+  this.animate = function () {
+    requestAnimationFrame(this.animate.bind(this));
+    if (this.paused) {
+      return;
+    }
+    this.updateScene();
+    this.updateMovement();
+    this.renderer.render(this.scene, this.camera);
+  }
+
   // Start the animation.
   this.start = function () {
     if (!hasDeviceOrientation()) {

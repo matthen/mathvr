@@ -73,12 +73,7 @@ window.addEventListener("load", function() {
     this.scene.add(lp);
   }
 
-  vr.animate = function () {
-    requestAnimationFrame(this.animate.bind(this));
-    if (this.paused) {
-      return;
-    }
-    // Transition between simple and body centred lattice.
+  vr.updateScene = function () {
     if (transitioning) {
       transition_t += 0.01;
       if (transition_t > 1.0) {
@@ -104,8 +99,6 @@ window.addEventListener("load", function() {
     if (lp_queue.length > 0 && !transitioning) {
       addLatticePoint.bind(this)(lp_queue.pop());
     }
-    this.updateMovement();
-    this.renderer.render(this.scene, this.camera);
   }
   vr.start();
 }, false);  // window load
