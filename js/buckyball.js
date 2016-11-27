@@ -36,15 +36,6 @@ window.addEventListener("load", function() {
     this.addMovementButtons();
   };
 
-  vr.animate = function () {
-    requestAnimationFrame(this.animate.bind(this));
-    if (this.paused) {
-      return;
-    }
-    this.updateMovement();
-    this.renderer.render(this.scene, this.camera);
-
-  }
   vr.start();
 
 }, false);  // window load

@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description"
+          content="Shine a flashlight to create circles, ellipses, parabolas and
+                hyperbolas. The cone of light is intersected by the plane below.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>VR.matthen &dash; Conic sections</title>
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="192x192" href="../images/icon_192.png">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="vr.matthen">
+    <link rel="apple-touch-icon-precomposed" href="../images/icon_192.png">
+
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="../images/icon_144.png">
+    <meta name="msapplication-TileColor" content="#009688">
+
+    <!--<meta name="theme-color" content="#009688">-->
+    <link rel="shortcut icon" href="../images/icon_144.png">
+    <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="../css/style.min.css">
+  </head>
+  <body class="mdl-color--grey-100 mdl-color-text--grey-700 mdl-base">
+    
+  <div id="canvas_wrapper">
+  </div>
+  <dialog class="mdl-dialog" id="orientation_dialog">
+    <h4 class="mdl-dialog__title">Only available on mobile devices</h4>
+    <div class="mdl-dialog__content">
+      <p>
+        Visualizations require a gyroscope and compass, and work best with a
+        handheld device. Try opening the page on your phone or tablet.
+      </p>
+    </div>
+    <div class="mdl-dialog__actions">
+      <a href=".."
+         class="mdl-button mdl-button--colored mdl-button--raised">
+        close
+      </a>
+    </div>
+  </dialog>
+
+  <dialog class="mdl-dialog" id="webgl_dialog">
+    <h4 class="mdl-dialog__title">No webGL</h4>
+    <div class="mdl-dialog__content">
+      <p>
+        This device does not support webGL, so the visualization cannot work.
+      </p>
+    </div>
+    <div class="mdl-dialog__actions">
+      <a href="https://get.webgl.org/troubleshooting/"
+         target="_new" class="mdl-button mdl-button--colored mdl-button--raised">
+        troubleshoot
+      </a>
+      <a href=".."
+         class="mdl-button mdl-button--colored mdl-button--raised">
+        close
+      </a>
+    </div>
+  </dialog>
+
+  <dialog class="mdl-dialog" id="fullscreen_dialog">
+    <div class="mdl-dialog__content">
+      <p>
+        Enter full screen to start the visualization.
+      </p>
+    </div>
+    <div class="mdl-dialog__actions">
+      <button class="mdl-button mdl-js-button mdl-button--colored mdl-button--raised"
+              id="fullscreen_button">
+        full screen
+      </button>
+    </div>
+  </dialog>
+
+
+  <script src="../js/vr.min.js"></script>
+  <script src="../js/three.min.js"></script>
+  <script src="../js/conic.js"></script>
+  <script src="../js/dialog-polyfill.min.js"></script>
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+      <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+          <span class="mdl-layout-title">
+              VR.matthen
+          </span>
+        </div>
+      </header>
+      <div class="mdl-layout__drawer">
+        <nav class="mdl-navigation mdl-layout-spacer">
+          <a class="mdl-navigation__link" href="..">
+            <i class="material-icons mdl-color-text--teal-700">view_stream</i>
+            Visualizations
+          </a>
+          <a class="mdl-navigation__link" href="../about.html">
+            <i class="material-icons mdl-color-text--teal-700">info</i>
+            About
+          </a>
+          <div class="mdl-layout-spacer"></div>
+          <a class="mdl-navigation__link" href="https://github.com/matthen/mathvr/issues" target="_new">
+            <i class="material-icons mdl-color-text--teal-700">bug_report</i>
+            Report an issue
+          </a>
+        </nav>
+      </div>
+      <main class="mdl-layout__content">
+        <div id="content">
+          
+          
+        </div>
+      </main>
+
+
+    </div>
+    <script src="../js/material.min.js"></script>
+    <script type="text/javascript">
+      // hasDeviceOrientation() gives a best guess for whether this device
+      // supports device orientation events fully.
+      window.addEventListener("deviceorientation", function(e) {
+        if (e.alpha) {
+          var d = new Date();
+          d.setTime(d.getTime() + (365*24*60*60*1000));
+          var expires = "expires="+ d.toUTCString();
+          document.cookie = "hasdeviceorientation=true;" + expires + ";path=/";
+        }
+      }, false);
+
+      function hasDeviceOrientation() {
+        if (!window.DeviceOrientationEvent) {
+          return false;
+        }
+        var name = "hasdeviceorientation=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+          var c = ca[i];
+          while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+          }
+          if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+          }
+        }
+        return false;
+      }
+    </script>
+  </body>
+</html>
