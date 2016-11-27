@@ -47,8 +47,6 @@ def BuildJS():
     shutil.copy("js/" + fname, "../gh-pages/js/" + fname)
     print "Wrote ../gh-pages/js/" + fname
 
-
-
 def CreateIndexPage():
   t = get_template("index.html")
   c = Context({
@@ -64,7 +62,6 @@ def CreateIndexPage():
     f.write(t.render(Context({"root_dir": "."})))
   print "Wrote ../gh-pages/about.html"
 
-
 def CreateVisualizationPages():
   t = get_template("visualization.html")
   for visualization in VISUALIZATIONS:
@@ -79,9 +76,13 @@ def CreateVisualizationPages():
     shutil.copy(js_file, "../gh-pages/" + js_file)
     print "Wrote ../gh-pages/" + js_file
 
-    image = "images/" + visualization.name + ".png"
-    shutil.copy(image, "../gh-pages/" + image)
-    print "Wrote ../gh-pages/" + image
+
+def CopyImages():
+  for fname in os.listdir("images"):
+    if fname.endswith(".png"):
+      fname = "images/" + fname
+      shutil.copy(fname, "../gh-pages/" + fname)
+      print "Wrote ../gh-pages/" + fname
 
 
 if __name__ == '__main__':
@@ -89,7 +90,7 @@ if __name__ == '__main__':
   if len(sys.argv) > 1:
     rule = sys.argv[-1]
 
-  rules = ["css", "viz", "js", "index", "all"]
+  rules = ["css", "viz", "js", "index", "images", "all"]
 
   if rule not in rules:
     raise ValueError("rule must be one of: {}".format(", ".join(rules)))
@@ -108,3 +109,6 @@ if __name__ == '__main__':
 
   if rule in ["viz", "all"]:
     CreateVisualizationPages()
+
+  if rule in ["images", "all"]:
+    CopyImages()

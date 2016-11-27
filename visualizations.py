@@ -8,6 +8,12 @@ class Visualization(object):
 
 
 VISUALIZATIONS = [
+  Visualization(name="conic",
+                title="Conic sections",
+                description="""
+                Shine a flashlight to create circles, ellipses, parabolas and
+                hyperbolas. The cone of light is intersected by the plane below.
+                """),
   Visualization(name="lattice",
                 title="Cubic lattices",
                 description="""

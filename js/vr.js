@@ -1,4 +1,12 @@
-var VR = function () {
+var VR = function (params) {
+  // Load the params.
+  params = params || {};
+
+  // If true, the camera always points to the origin, and the camera moves
+  // around the surface of a sphere.
+  var inward_view = params.inward_view || false;
+  var inward_view_radius = params.inward_view_radius || 10;
+
   this.canvas_wrapper = document.getElementById("canvas_wrapper");
 
   // Error messages.
@@ -99,6 +107,12 @@ var VR = function () {
       this.camera.rotation.set(e.beta * deg2rad,
                                e.gamma * deg2rad,
                                alpha * deg2rad);
+      if (inward_view) {
+        var v = this.camera.getWorldDirection().normalize();
+        v.multiplyScalar(-inward_view_radius);
+        this.camera.position.copy(v);
+      }
+
     }.bind(this), false);
 
     this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -161,18 +175,22 @@ var VR = function () {
   // Movement.
   // TODO(matthen) fix selecting button text;
   var velocity = new THREE.Vector3();
+  var v_direction = 0;  // 0, -1 or 1.
   var moving_t = 0.1;
   this.addMovementButtons = function() {
     var forward_button = this.addButton("arrow_upward");
     var backward_button = this.addButton("arrow_downward");
 
     function startForward() {
-       velocity.copy(this.camera.getWorldDirection().multiplyScalar(0.5));
+      v_direction = 1;
+      velocity.copy(this.camera.getWorldDirection().multiplyScalar(0.5));
     }
     function startBackward() {
-       velocity.copy(this.camera.getWorldDirection().multiplyScalar(-0.5));
+      v_direction = -1;
+      velocity.copy(this.camera.getWorldDirection().multiplyScalar(-0.5));
     }
     function stopMoving() {
+      v_direction = 0;
       velocity.setScalar(0);
       moving_t = 0.1;
     }
@@ -188,6 +206,16 @@ var VR = function () {
       moving_t += 0.005;
       if (moving_t > 1.0) {
         moving_t = 1.0;
+      }
+      if (inward_view) {
+        inward_view_radius -= 0.5 * v_direction * moving_t;
+        if (inward_view_radius < 2) {
+          inward_view_radius = 2;
+        }
+        var v = this.camera.getWorldDirection().normalize();
+        v.multiplyScalar(-inward_view_radius);
+        this.camera.position.copy(v);
+        return;
       }
       var v = new THREE.Vector3();
       v.copy(velocity).multiplyScalar(moving_t * moving_t);

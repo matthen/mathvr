@@ -1,75 +1,75 @@
 window.addEventListener("load", function() {
-  document.getElementById("start_conic").addEventListener("click", function() {
-    let vr = new VR();
-    let torch_light, torch_light_helper;
-    let cube;
-    vr.createScene = function () {
-      // Create ambient light.
-      this.scene.add(new THREE.PointLight(0xff0000, 0.5, 1000));
-      this.scene.add(new THREE.AmbientLight(0xffff00, 0.2));
+  var vr = new VR({
+    inward_view: true,
+    inward_view_radius: 20,
+  });
+  var t = 0;
+  var wall, cube, torch;
+  var target_rotation;
+  vr.createScene = function () {
+    // Create ambient light.
+    var pl = new THREE.PointLight(0xffffff, 0.5, 1000);
+    pl.position.set(10, 0, 0);
+
+    this.scene.add(pl);
+    this.scene.add(new THREE.AmbientLight(0xffffff, 0.2));
 
 
-      // Add a wall.
-      let geometry = new THREE.PlaneGeometry(1000, 1000);
-      // TODO(matt) add a wallpaper.
-      let material = new THREE.MeshPhongMaterial({ color: 0xfff0ff, side:THREE.DoubleSide  });
-      let wall = new THREE.Mesh(geometry, material);
-      wall.rotation.x = Math.PI / 2;
-      wall.position.set(0, 100, 0);
-      this.scene.add(wall);
+    // Add the plane.
+    var geometry = new THREE.PlaneGeometry(300, 300);
+    var texture = THREE.ImageUtils.loadTexture("../images/grid_texture.png");
+    texture.repeat.set(60, 60);
+    texture.wrapS = THREE.RepeatWrapping; texture.wrapT = THREE.RepeatWrapping;
+    geometry.computeVertexNormals();
+    var material = new THREE.MeshPhongMaterial();
+    material.map = texture;
+
+    wall = new THREE.Mesh(geometry, material);
+    wall.position.set(0, 0, -22);  // just below the camera's swing.
+    this.scene.add(wall);
 
 
-      geometry = new THREE.PlaneGeometry(1000, 1000);
-      // TODO(matt) add a wallpaper.
-      material = new THREE.MeshPhongMaterial({ color: 0xfffff0, side:THREE.DoubleSide  });
-      wall = new THREE.Mesh(geometry, material);
-      wall.rotation.x = Math.PI / 2;
-      wall.position.set(0, -100, 0);
-      this.scene.add(wall);
-
-      // Create torch_light.
-      torch_light = new THREE.SpotLight(0x008888);
-      torch_light.position.set(0, 0, 0);
-      torch_light.angle = Math.PI / 8;
-      torch_light.intensity = 1;
-      torch_light_helper = new THREE.SpotLightHelper(torch_light);
-      this.scene.add(torch_light.target);
-      //    this.scene.add(torch_light_helper);
-      this.scene.add(torch_light);
-
-
-      // debug cube
-      geometry = new THREE.BoxGeometry( 2, 20, 0.2 );
-      material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-      cube = new THREE.Mesh( geometry, {} );
-      this.scene.add(cube);
-
-      this.camera.position.set(0, 0, 0);
-
-      // Create the torch.
-
-    };
-
-    vr.animate = function () {
-      // Move torch_light.
-      let v = this.camera.getWorldDirection().normalize();
-
-      cube.position.copy(v.multiplyScalar(15));
-      cube.rotation.copy(this.camera.rotation);
-      cube.updateMatrixWorld();
-      var vector = cube.geometry.vertices[2].clone();
-      vector.applyMatrix4(cube.matrixWorld);
-      console.log(vector);
-      torch_light.position.copy(vector);
-      torch_light.target.position.copy(vector).add(v);
+    // the torch
+    torch = new THREE.Group();
+    geometry = new THREE.CylinderGeometry(0.5, 0.5, 2.5, 32);
+    material = new THREE.MeshPhongMaterial({color: 0xa5361a});
+    var cylinder = new THREE.Mesh(geometry, material);
+    torch.add(cylinder);
+    geometry = new THREE.CylinderGeometry(0.6, 0.6, 1, 32);
+    material = new THREE.MeshPhongMaterial({color: 0x5f64ef});
+    var cylinder2 = new THREE.Mesh(geometry, material);
+    cylinder2.position.y += 1.5;
+    torch.add(cylinder2);
+    torch_light = new THREE.SpotLight(0xfffdf4, 0.3, 1000, Math.PI / 8, 0, 1);
+    torch_light.position.set(0, -1.5, 0);
+    torch_light.angle = Math.PI / 8;
+    torch_light.intensity = 0.3;
+    torch_light.target.position.set(0, 1, 0);
+    torch.add(torch_light.target);
+    torch.add(torch_light);
+    this.scene.add(torch);
+    target_rotation = new THREE.Object3D();
+    target_rotation.rotateX(-Math.PI / 3);
+    this.scene.add(target_rotation);
 
 
+    // Add button to move torch to current location.
+    button = this.addButton("gps_not_fixed");
+    button.addEventListener("click", function () {
+      target_rotation.rotation.copy(this.camera.rotation);
+      target_rotation.rotateX(-Math.PI / 2);
+      target_rotation.rotation.y = 0;
+    }.bind(this));
 
-      torch_light_helper.update();
-      requestAnimationFrame(this.animate.bind(this));
-      this.renderer.render(this.scene, this.camera);
-    }
-    vr.start();
-  }, false);  // #start_conic click
+    this.addMovementButtons();
+  };
+
+  vr.updateScene = function () {
+    var rot = target_rotation.rotation.clone().toVector3().multiplyScalar(0.1);
+    rot.add(torch.rotation.clone().toVector3().multiplyScalar(0.9));
+    torch.rotation.setFromVector3(rot, "ZXY");
+  }
+
+
+  vr.start();
 }, false);  // window load
-
