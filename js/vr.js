@@ -246,6 +246,17 @@ var VR = function (params) {
     }
   }
 
+  this.showToast = function (message) {
+    var snackbarContainer = document.getElementById('toast');
+    if (snackbarContainer.className.includes("active")) {
+      return;
+    }
+    snackbarContainer.MaterialSnackbar.showSnackbar({
+        message: message,
+        timeout: 1000
+    });
+  }
+
 }  // VR
 
 

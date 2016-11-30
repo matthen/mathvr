@@ -107,7 +107,8 @@ section.section--footer {
   margin: 0 -8px -8px -8px;
 }
 
-.mdl-button > i {
+.mdl-button > i, .mdl-button {
+  -webkit-user-select: none;
   -webkit-touch-callout: none;
     -webkit-user-select: none;
      -khtml-user-select: none;

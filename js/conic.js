@@ -23,7 +23,7 @@ window.addEventListener("load", function() {
     geometry.computeVertexNormals();
     var material = new THREE.MeshPhongMaterial();
     material.map = texture;
-
+    material.side = THREE.DoubleSide;
     wall = new THREE.Mesh(geometry, material);
     wall.position.set(0, 0, -22);  // just below the camera's swing.
     this.scene.add(wall);
@@ -41,12 +41,21 @@ window.addEventListener("load", function() {
     cylinder2.position.y += 1.5;
     torch.add(cylinder2);
     torch_light = new THREE.SpotLight(0xfffdf4, 0.3, 1000, Math.PI / 8, 0, 1);
-    torch_light.position.set(0, -1.5, 0);
+    torch_light.position.set(0, 0.5, 0);
     torch_light.angle = Math.PI / 8;
     torch_light.intensity = 0.3;
     torch_light.target.position.set(0, 1, 0);
     torch.add(torch_light.target);
     torch.add(torch_light);
+    var h = 500;
+    geometry = new THREE.ConeGeometry(h * Math.tan(torch_light.angle), h, 64);
+    material = new THREE.MeshLambertMaterial({color: 0xfffdf4, opacity: 0.2, transparent: true});
+    var cone = new THREE.Mesh(geometry, material);
+    cone.rotateX(Math.PI);
+    cone.position.copy(torch_light.position.clone());
+    cone.position.y += h / 2;
+    torch.add(cone);
+
     this.scene.add(torch);
     target_rotation = new THREE.Object3D();
     target_rotation.rotateX(-Math.PI / 3);
@@ -59,6 +68,19 @@ window.addEventListener("load", function() {
       target_rotation.rotation.copy(this.camera.rotation);
       target_rotation.rotateX(-Math.PI / 2);
       target_rotation.rotation.y = 0;
+      var a = -target_rotation.rotation.x;
+      if (a < -torch_light.angle) {
+        return;
+      }
+      var text = "hyperbola!";
+      if (Math.abs(a - Math.PI / 2) < 0.05) {
+        text = "circle! pointing straight downwards.";
+      } else if (Math.abs(a - torch_light.angle) < 0.01) {
+        text = "parabola! the top of the light cone is horizontal.";
+      } else if (a > torch_light.angle) {
+        text = "ellipse!";
+      }
+      this.showToast(text);
     }.bind(this));
 
     this.addMovementButtons();

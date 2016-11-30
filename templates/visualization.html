@@ -1,6 +1,6 @@
 {% extends "main.html" %}
 {% block description %}{{visualization.description.strip}}{% endblock %}
-{% block title %}&dash; {{visualization.title}}{% endblock %}
+{% block title %} - {{visualization.title}}{% endblock %}
 {% block head %}
   <meta property="og:image" content="{{root_dir}}/images/{{visualization.name}}.png">
 {% endblock %}
@@ -56,6 +56,10 @@
     </div>
   </dialog>
 
+  <div id="toast" class="mdl-js-snackbar mdl-snackbar">
+    <div class="mdl-snackbar__text"></div>
+    <button class="mdl-snackbar__action" type="button"></button>
+  </div>
 
   <script src="{{root_dir}}/js/vr.min.js"></script>
   <script src="{{root_dir}}/js/three.min.js"></script>
