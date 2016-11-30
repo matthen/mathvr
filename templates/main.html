@@ -28,6 +28,9 @@
     <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="{{root_dir}}/css/style.min.css">
+    {% block head %}
+    <meta property="og:image" content="{{root_dir}}/images/conic.png">
+    {% endblock %}
   </head>
   <body class="mdl-color--grey-100 mdl-color-text--grey-700 mdl-base">
     {% block pre_layout %}{% endblock %}

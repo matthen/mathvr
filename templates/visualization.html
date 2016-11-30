@@ -1,6 +1,9 @@
 {% extends "main.html" %}
 {% block description %}{{visualization.description.strip}}{% endblock %}
 {% block title %}&dash; {{visualization.title}}{% endblock %}
+{% block head %}
+  <meta property="og:image" content="{{root_dir}}/images/{{visualization.name}}.png">
+{% endblock %}
 {% block pre_layout %}
   <div id="canvas_wrapper">
   </div>
