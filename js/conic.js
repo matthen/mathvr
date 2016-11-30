@@ -73,14 +73,17 @@ window.addEventListener("load", function() {
         return;
       }
       var text = "hyperbola!";
+      var timeout = 1000;
       if (Math.abs(a - Math.PI / 2) < 0.05) {
         text = "circle! pointing straight downwards.";
+        timeout = 3000;
       } else if (Math.abs(a - torch_light.angle) < 0.01) {
         text = "parabola! the top of the light cone is horizontal.";
+        timeout = 3000;
       } else if (a > torch_light.angle) {
         text = "ellipse!";
       }
-      this.showToast(text);
+      this.showToast(text, timeout);
     }.bind(this));
 
     this.addMovementButtons();

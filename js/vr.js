@@ -246,14 +246,15 @@ var VR = function (params) {
     }
   }
 
-  this.showToast = function (message) {
+  this.showToast = function (message, timeout) {
+    timeout = timeout || 1000;
     var snackbarContainer = document.getElementById('toast');
     if (snackbarContainer.className.includes("active")) {
       return;
     }
     snackbarContainer.MaterialSnackbar.showSnackbar({
         message: message,
-        timeout: 1000
+        timeout: timeout
     });
   }
 
