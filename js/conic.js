@@ -7,10 +7,9 @@ window.addEventListener("load", function() {
   var wall, cube, torch;
   var target_rotation, holding_target = false, holding_target_t = 0;
   vr.createScene = function () {
-    // Create ambient light.
+    // Create lights.
     var pl = new THREE.PointLight(0xffffff, 0.5, 1000);
     pl.position.set(10, 0, 0);
-
     this.scene.add(pl);
     this.scene.add(new THREE.AmbientLight(0xffffff, 0.2));
 
