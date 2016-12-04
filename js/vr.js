@@ -246,16 +246,41 @@ var VR = function (params) {
     }
   }
 
+  var toast_tools = (function() {
+    return {
+        toastUp: function(msg) {
+            var toast = document.querySelector('#toast');
+            var snackbarText = document.querySelector('.mdl-snackbar__text');
+            snackbarText.innerHTML = msg;
+            toast.classList.add("mdl-snackbar--active");
+        },
+        toastDown: function(count) {
+            setTimeout(function () {
+                var toast = document.getElementById("toast");
+                toast.classList.remove("mdl-snackbar--active");
+            }, config.timeout * count);
+        },
+    };
+  })();
+
   this.showToast = function (message, timeout) {
     timeout = timeout || 1000;
     var snackbarContainer = document.getElementById('toast');
     if (snackbarContainer.className.includes("active")) {
-      return;
+      snackbarContainer.classList.remove("mdl-snackbar--active");
     }
     snackbarContainer.MaterialSnackbar.showSnackbar({
         message: message,
         timeout: timeout
     });
+  }
+
+  this.showToastIndefinite = function (message) {
+    var toast = document.getElementById("toast");
+    toast.classList.remove("mdl-snackbar--active");
+    var snackbarText = document.querySelector('.mdl-snackbar__text');
+    snackbarText.innerHTML = message;
+    toast.classList.add("mdl-snackbar--active");
   }
 
 }  // VR
