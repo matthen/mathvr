@@ -146,14 +146,17 @@ var VR = function (params) {
   // Start the animation.
   this.start = function () {
     if (!hasDeviceOrientation()) {
+      ga('send', 'event', 'VR', 'error', 'not_mobile');
       orientation_dialog.showModal();
       return;
     }
     if (!webglAvailable()) {
+      ga('send', 'event', 'VR', 'error', 'no_webgl');
       webgl_dialog.showModal();
       return;
     }
     this.createViewer();
+    ga('send', 'event', 'VR', 'play');
     this.animate();
   }
 
