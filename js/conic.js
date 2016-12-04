@@ -5,7 +5,7 @@ window.addEventListener("load", function() {
   });
   var t = 0;
   var wall, cube, torch;
-  var target_rotation;
+  var target_rotation, holding_target = false, holding_target_t = 0;
   vr.createScene = function () {
     // Create ambient light.
     var pl = new THREE.PointLight(0xffffff, 0.5, 1000);
@@ -63,7 +63,19 @@ window.addEventListener("load", function() {
 
     // Add button to move torch to current location.
     button = this.addButton("gps_not_fixed");
-    button.addEventListener("click", function () {
+    button.addEventListener("touchstart", function () {
+      holding_target = true;
+    }.bind(this));
+    button.addEventListener("touchend", function () {
+      holding_target = false;
+      holding_target_t = 0;
+    }.bind(this));
+
+    this.addMovementButtons();
+  };
+
+  vr.updateScene = function () {
+    if (holding_target) {
       target_rotation.rotation.copy(this.camera.rotation);
       target_rotation.rotateX(-Math.PI / 2);
       target_rotation.rotation.y = 0;
@@ -80,14 +92,11 @@ window.addEventListener("load", function() {
         text = "ellipse!";
       }
       this.showToastIndefinite(text);
-    }.bind(this));
-
-    this.addMovementButtons();
-  };
-
-  vr.updateScene = function () {
-    var rot = target_rotation.rotation.clone().toVector3().multiplyScalar(0.1);
-    rot.add(torch.rotation.clone().toVector3().multiplyScalar(0.9));
+      holding_target_t += 0.01;
+    }
+    var s = 0.1 + 0.9 * Math.tanh(holding_target_t);
+    var rot = target_rotation.rotation.clone().toVector3().multiplyScalar(s);
+    rot.add(torch.rotation.clone().toVector3().multiplyScalar(1 - s));
     torch.rotation.setFromVector3(rot, "ZXY");
   }
 
