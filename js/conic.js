@@ -16,6 +16,7 @@ window.addEventListener("load", function() {
 
     // Add the plane.
     var plane_width = 600;
+    this.addStars(100, 1.5 * plane_width, 2 * plane_width, 5);
     var geometry = new THREE.PlaneGeometry(plane_width, plane_width);
     var texture = THREE.ImageUtils.loadTexture("../images/grid_texture.png");
     texture.repeat.set(plane_width / 5, plane_width / 5);
