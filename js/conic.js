@@ -16,16 +16,17 @@ window.addEventListener("load", function() {
 
 
     // Add the plane.
-    var geometry = new THREE.PlaneGeometry(300, 300);
+    var plane_width = 600;
+    var geometry = new THREE.PlaneGeometry(plane_width, plane_width);
     var texture = THREE.ImageUtils.loadTexture("../images/grid_texture.png");
-    texture.repeat.set(60, 60);
+    texture.repeat.set(plane_width / 5, plane_width / 5);
     texture.wrapS = THREE.RepeatWrapping; texture.wrapT = THREE.RepeatWrapping;
     geometry.computeVertexNormals();
     var material = new THREE.MeshPhongMaterial();
     material.map = texture;
     material.side = THREE.DoubleSide;
     wall = new THREE.Mesh(geometry, material);
-    wall.position.set(0, 0, -22);  // just below the camera's swing.
+    wall.position.set(0, 0, -22);  // just below the camera's initial swing.
     this.scene.add(wall);
 
 
@@ -40,14 +41,12 @@ window.addEventListener("load", function() {
     var cylinder2 = new THREE.Mesh(geometry, material);
     cylinder2.position.y += 1.5;
     torch.add(cylinder2);
-    torch_light = new THREE.SpotLight(0xfffdf4, 0.3, 1000, Math.PI / 8, 0, 1);
+    torch_light = new THREE.SpotLight(0xfffdf4, 0.3, 1000, Math.PI / 9, 0, 1);
     torch_light.position.set(0, 0.5, 0);
-    torch_light.angle = Math.PI / 8;
-    torch_light.intensity = 0.3;
     torch_light.target.position.set(0, 1, 0);
     torch.add(torch_light.target);
     torch.add(torch_light);
-    var h = 500;
+    var h = plane_width * 1.5;
     geometry = new THREE.ConeGeometry(h * Math.tan(torch_light.angle), h, 64);
     material = new THREE.MeshLambertMaterial({color: 0xfffdf4, opacity: 0.2, transparent: true});
     var cone = new THREE.Mesh(geometry, material);
